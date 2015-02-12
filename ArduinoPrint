@@ -1,0 +1,45 @@
+#include <Wire.h>
+#include <Adafruit_Sensor.h>
+#include <Adafruit_L3GD20_U.h>
+
+Adafruit_L3GD20_Unified gyro = Adafruit_L3GD20_Unified(20);
+
+void displaySensorDetails(void)
+{
+  sensor_t sensor;
+  gyro.getSensor(&sensor);
+  Serial.println("------------------------------------");
+  Serial.print  ("Sensor:       "); Serial.println(sensor.name);
+  Serial.print  ("Driver Ver:   "); Serial.println(sensor.version);
+  Serial.print  ("Unique ID:    "); Serial.println(sensor.sensor_id);
+  Serial.print  ("Max Value:    "); Serial.print(sensor.max_value); Serial.println(" rad/s");
+  Serial.print  ("Min Value:    "); Serial.print(sensor.min_value); Serial.println(" rad/s");
+  Serial.print  ("Resolution:   "); Serial.print(sensor.resolution); Serial.println(" rad/s");  
+  Serial.println("------------------------------------");
+  Serial.println("");
+  delay(500);
+}
+
+void setup(void) 
+{
+  Serial.begin(9600);
+  Serial.println("Gyroscope Test"); Serial.println("");
+  
+  gyro.enableAutoRange(true);
+  if(!gyro.begin())
+  {
+    Serial.println("Ooops, no L3GD20 detected ... Check your wiring!");
+    while(1);
+  }
+  displaySensorDetails();
+}
+
+void loop(void) 
+{
+  sensors_event_t event; 
+  gyro.getEvent(&event);
+  Serial.print("X: "); Serial.println(event.gyro.x-0.01+0.003);
+  Serial.print("Y: "); Serial.println(event.gyro.y);
+  Serial.print("Z: "); Serial.println(event.gyro.z+0.01);
+  Serial.println("");
+}
