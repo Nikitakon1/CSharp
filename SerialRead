@@ -1,0 +1,24 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.IO.Ports;
+namespace test
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            SerialPort port = new SerialPort("COM3", 9600);
+            port.Open();
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            while (true)
+            {
+                String s = port.ReadLine();
+                Console.WriteLine(s);
+            }
+            port.Close();
+        }
+    }
+}
