@@ -1,0 +1,298 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Threading;
+using Var = ConsoleApplication10.Variables;
+
+
+
+
+
+
+namespace ConsoleApplication10
+{
+    class Variables
+    {
+        public static ConsoleKeyInfo KeyPressed;
+        //public static int oldx;
+        //public static int oldy;
+        //public static int oldoldx;
+        //public static int oldoldy;
+        public static int snakeLength = 3;
+        public static int loopNumber = 0;
+        public static int tl_x;
+        public static int tr_x;
+        public static int bl_x;
+        public static int br_x;
+        public static int top_x;
+        public static int tl_y;
+        public static int tr_y;
+        public static int bl_y;
+        public static int br_y;
+        public static int top_y;
+        public static Random rnd = new Random();
+        public static Boolean mode = false;
+        public static int x = 40;
+        public static int y = 12;
+        public static int score = 0;
+        public static int snakeGrower = 0;
+        public static bool pause = false;
+        public static int loopTime = 100;
+    }
+    class Program
+    {
+        public struct screen
+        {
+            public int x;
+            public int y;
+        }
+        public static void CheckhitAndDeleteAppleThenRedraw(int x, int y)
+        {
+            if (Var.tl_x == x && Var.tl_y == y)
+            {
+                Console.Clear();
+                DrawApple();
+                Var.score = Var.score + 1;
+                Var.snakeLength = Var.snakeLength + 5;
+                Var.snakeGrower = 6;
+                if (Var.loopTime >= 10)
+                {
+                    Var.loopTime = Var.loopTime - 10;
+                }
+            }
+            if (Var.tr_x == x && Var.tr_y == y)
+            {
+                Console.Clear();
+                DrawApple();
+                Var.score = Var.score + 1;
+                Var.snakeLength = Var.snakeLength + 5;
+                Var.snakeGrower = 6;
+            }
+            if (Var.bl_x == x && Var.bl_y == y)
+            {
+                Console.Clear();
+                DrawApple();
+                Var.score = Var.score + 1;
+                Var.snakeLength = Var.snakeLength + 5;
+                Var.snakeGrower = 6;
+            }
+            if (Var.br_x == x && Var.br_y == y)
+            {
+                Console.Clear();
+                DrawApple();
+                Var.score = Var.score + 1;
+                Var.snakeLength = Var.snakeLength + 5;
+                Var.snakeGrower = 6;
+            }
+            if (Var.top_x == x && Var.top_y == y)
+            {
+                Console.Clear();
+                DrawApple();
+                Var.score = Var.score + 1;
+                Var.snakeLength = Var.snakeLength + 5;
+                Var.snakeGrower = 6;
+            }
+            if (Var.mode == false)
+            {
+                DrawApple();
+                Var.score = Var.score + 1;
+            }
+        }
+        public static void DrawApple()
+        {
+            Var.top_x = Var.rnd.Next(5, Console.LargestWindowWidth - 5);
+            Var.top_y = Var.rnd.Next(5, Console.LargestWindowHeight - 5);
+            Var.tl_x = Var.top_x;
+            Var.tl_y = Var.top_y + 1;
+            Var.tr_x = Var.top_x + 1;
+            Var.tr_y = Var.top_y + 1;
+            Var.bl_x = Var.top_x;
+            Var.bl_y = Var.top_y + 2;
+            Var.br_x = Var.top_x + 1;
+            Var.br_y = Var.top_y + 2;
+            //-----------
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.SetCursorPosition(Var.top_x, Var.top_y);
+            Console.WriteLine("|");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.SetCursorPosition(Var.tl_x, Var.tl_y);
+            Console.WriteLine("#");
+            Console.SetCursorPosition(Var.tr_x, Var.tr_y);
+            Console.WriteLine("#");
+            Console.SetCursorPosition(Var.bl_x, Var.bl_y);
+            Console.WriteLine("#");
+            Console.SetCursorPosition(Var.br_x, Var.br_y);
+            Console.WriteLine("#");
+            Var.mode = true;
+        }
+        public static void CheckKey()
+        {
+            if (Console.KeyAvailable)
+            {
+                Var.KeyPressed = Console.ReadKey(true);
+            }
+        }
+        public static void startScreen()
+        {
+            Console.Clear();
+            Console.SetCursorPosition(10, 5);
+            Console.WriteLine("Welcome to the snake Game by Nikita K.");
+            Console.SetCursorPosition(10, 6);
+            Console.WriteLine("There are 2 ways to die; Either run into yourself, or hit the wall");
+            Console.SetCursorPosition(10, 8);
+            Console.WriteLine("Once started press WINDOWS Key + up Arrow to allign the screen!");
+            Console.SetCursorPosition(10, 9);
+            Console.WriteLine("Press enter to start!");
+            Console.ReadLine();
+            Console.Clear();
+        }
+        static void Main(string[] args)
+        {
+            startScreen();
+            Console.Title = "Snake-By Nikita K";
+            //Console.OutputEncoding = Encoding.UTF8;
+
+
+
+
+
+
+            //------------------
+            Console.SetWindowSize(Console.LargestWindowWidth - 3, Console.LargestWindowHeight);
+            Queue<screen> myQueue = new Queue<screen>();
+            screen whereAmI;
+            whereAmI.x = Var.x;
+            whereAmI.y = Var.y;
+            string direction = "3";
+            for (int i = 0; i < Var.snakeLength; i++)
+            {
+                myQueue.Enqueue(whereAmI);
+            }
+            while (Var.pause == false)
+            {
+                // Thread th = new Thread(CheckKey);
+                CheckKey();
+                //th.Start();
+                if (Var.mode == false)
+                {
+                    DrawApple();
+                }
+                if (Var.snakeGrower >= 1)
+                {
+                    Var.snakeGrower = Var.snakeGrower - 1;
+                }
+                if (Var.KeyPressed.Key == ConsoleKey.UpArrow && direction != "3")
+                {
+                    direction = "1";
+                }
+                if (Var.KeyPressed.Key == ConsoleKey.LeftArrow && direction != "4")
+                {
+                    direction = "2";
+                }
+                if (Var.KeyPressed.Key == ConsoleKey.DownArrow && direction != "1")
+                {
+                    direction = "3";
+                }
+                if (Var.KeyPressed.Key == ConsoleKey.RightArrow && direction != "2")
+                {
+                    direction = "4";
+                }
+                if (Var.KeyPressed.Key == ConsoleKey.W && direction != "3")
+                {
+                    direction = "1";
+                }
+                if (Var.KeyPressed.Key == ConsoleKey.A && direction != "4")
+                {
+                    direction = "2";
+                }
+                if (Var.KeyPressed.Key == ConsoleKey.S && direction != "1")
+                {
+                    direction = "3";
+                }
+                if (Var.KeyPressed.Key == ConsoleKey.D && direction != "2")
+                {
+                    direction = "4";
+                }
+                if (Var.KeyPressed.Key == ConsoleKey.Spacebar)
+                {
+                    Var.pause = true;
+                }
+                //--------------------------------------
+                if (direction == "1")
+                {
+                    Var.y = Var.y - 1;
+                }
+                if (direction == "2")
+                {
+                    Var.x = Var.x - 1;
+                }
+                if (direction == "3")
+                {
+                    Var.y = Var.y + 1;
+                }
+                if (direction == "4")
+                {
+                    Var.x = Var.x + 1;
+                }
+                ////////////////////////////////
+                if (direction == "1")
+                {
+                    Var.y = Var.y - 1;
+                }
+                if (direction == "2")
+                {
+                    Var.x = Var.x - 1;
+                }
+                if (direction == "3")
+                {
+                    Var.y = Var.y + 1;
+                }
+                if (direction == "4")
+                {
+                    Var.x = Var.x + 1;
+                }
+                //-------------------------------------
+                Console.SetCursorPosition(Var.x, Var.y);
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\xB2");
+                Console.ForegroundColor = ConsoleColor.DarkGreen;
+                foreach (screen tail in myQueue)
+                {
+                    Console.SetCursorPosition(tail.x, tail.y);
+                    Console.WriteLine("#");
+                }
+                whereAmI = myQueue.Peek();
+                Console.SetCursorPosition(whereAmI.x, whereAmI.y);
+                Console.Write(" ");
+                whereAmI.x = Var.x;
+                whereAmI.y = Var.y;
+                if (Var.snakeGrower == 0)
+                {
+                    myQueue.Dequeue();
+                }
+                myQueue.Enqueue(whereAmI);
+
+
+
+
+
+
+                System.Threading.Thread.Sleep(Var.loopTime);
+                Console.SetCursorPosition(1, 1);
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("Loop Number: " + Var.loopNumber + " Apples Eaten:" + Var.score + " Snake Length:" + Var.snakeLength + "squares" + " Loop Delay Time:" + Var.loopTime);
+                Var.loopNumber = Var.loopNumber + 1;
+
+
+
+
+
+
+                //---------
+                CheckhitAndDeleteAppleThenRedraw(Var.x, Var.y);
+            }
+        }
+    }
+}
