@@ -1,0 +1,61 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+namespace ConsoleApplication26
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int tempVar;
+            bool debug = false;
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            int[] myArray;
+            myArray = new int[20];
+            //------------------------------------------------
+            //for (int i = 1; i < 5; i++)
+            myArray[0] = 1;
+            myArray[1] = 17;
+            myArray[2] = 2223;
+            myArray[3] = 7;
+            myArray[4] = 75;
+            myArray[5] = 125;
+            myArray[6] = 14;
+            myArray[7] = 17;
+            myArray[8] = 5000;
+            myArray[9] = 23619;
+            myArray[10] = 2312;
+            myArray[11] = 123;
+            myArray[12] = 11;
+            myArray[13] = 23;
+            myArray[14] = 423;
+            myArray[15] = 532;
+            myArray[16] = 46;
+            myArray[17] = 1511;
+            myArray[18]= 234;
+            myArray[19] = 713;
+            for (int i = 0; i < myArray.Length; i++)
+            {
+                if (debug) { Console.Write("X"); }
+                for (int j = i; j < myArray.Length; j++)
+                {
+                    // Console.Write(".");
+                    if (myArray[i] > myArray[j])
+                    {
+                        //Console.WriteLine("Swap");
+                        tempVar = myArray[j];
+                        myArray[j] = myArray[i];
+                        myArray[i] = tempVar;
+                    }
+                }
+            }
+            for (int i = 0; i < myArray.Length; i++)
+            {
+                Console.WriteLine(myArray[i]);
+            }
+            Console.ReadLine();
+        }
+    }
+}
